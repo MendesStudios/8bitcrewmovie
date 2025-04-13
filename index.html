@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>8Bit Crew: La película</title>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Monoton', cursive;
+      text-align: center;
+      padding: 50px;
+      overflow: hidden;
+    }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      margin: 0 auto;
+    }
+
+    .portal {
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: conic-gradient(rgba(0, 191, 255, 0.3) 0%, transparent 50%, rgba(0, 191, 255, 0.3) 100%);
+      box-shadow: 0 0 25px 5px rgba(0, 191, 255, 0.4);
+      animation: spinPortal 6s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes spinPortal {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #00FF00;
+      text-shadow:
+        0 0 1px #ffff33,
+        0 0 2px #ffff33,
+        0 0 3px #ffff33;
+    }
+
+    #countdown {
+      font-size: 2em;
+      margin-top: 30px;
+      text-shadow:
+        0 0 1px #ffff33,
+        0 0 2px #ffff33;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="title-wrapper">
+    <div class="portal"></div>
+    <h1>8Bit Crew: La película</h1>
+  </div>
+  <p>El estreno se acerca...</p>
+  <div id="countdown"></div>
+
+  <audio id="bg-music" src="relax-music.mp3" autoplay loop></audio>
+  <audio id="beep" src="beep.mp3" preload="auto"></audio>
+
+  <script>
+    const launchDate = new Date();
+    launchDate.setMonth(launchDate.getMonth() + 10);
+    const trailerUrl = "https://www.youtube.com/watch?v=TU_TRAILER_AQUÍ";
+
+    const beep = document.getElementById("beep");
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance <= 0) {
+        window.location.href = trailerUrl;
+        return;
+      }
+
+      const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        `${months} meses ${days} días ${hours}h ${minutes}m ${seconds}s`;
+
+      if (!document.hidden) beep.play();
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
